@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.2.12'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.bappi'
+version = ''
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    mapstructVersion = "1.5.3.Final" as Object
+    lombokVersion = "1.18.20" as Object
+    lombokMapstructBindingVersion = "0.2.0" as Object
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}",
+            "org.projectlombok:lombok:${lombokVersion}",
+            "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    runtimeOnly 'org.postgresql:postgresql'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar{
+    enabled = true
+}
+
+jar {
+    enabled = true
+}
