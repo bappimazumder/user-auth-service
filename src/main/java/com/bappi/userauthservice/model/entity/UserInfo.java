@@ -45,7 +45,7 @@ public class UserInfo {
 
     @Column(name = USER_STATE)
     @Enumerated(EnumType.STRING)
-    private UserState userState = UserState.PENDING;
+    private UserState userState = UserState.ACTIVE;
 
     @Column(name = ACTIVE_STATUS)
     private Boolean activeStatus;

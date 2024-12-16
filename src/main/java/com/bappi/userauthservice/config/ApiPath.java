@@ -8,8 +8,6 @@ public class ApiPath {
     public static final String API_USER = PRODUCT_TITLE + "/user";
     public static final String API_POST_USER_GET_TOKEN = "/getToken";
     public static final String API_POST_ADD_USER = "/addUser";
-
-
-
+    public static final String API_POST_VALIDATE = "/validate";
 
 }
