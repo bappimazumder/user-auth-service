@@ -39,12 +39,9 @@ public class AuthService {
         this.objectMapper = Mappers.getMapper(UserInfoObjectMapper.class);
     }
 
-    public Optional<UserInfo> getById(Long id) {
-        return repository.findById(id);
-    }
-
     // Register New user
     public String addUser(UserInfoRequestDto requestDto){
+
         int uniqueId = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
         String userCode = USER_CODE_PREFIX + uniqueId;
 
@@ -78,5 +75,14 @@ public class AuthService {
         return false;
 
     }
+
+    public Optional<UserInfo> getByUserName(String userName) {
+        return repository.findByUserName(userName);
+    }
+
+    public Optional<UserInfo> getByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
 
 }
