@@ -6,12 +6,12 @@ spring:
     name: user-auth-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/user_auth_db
+    url: jdbc:postgresql://db:5431/user_auth_db
     username: postgres
-    password: 123
+    password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     properties:
       hibernate:

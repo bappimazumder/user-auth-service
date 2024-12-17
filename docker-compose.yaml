@@ -1,0 +1,32 @@
+services:
+  # Spring Boot application
+  user-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user_auth_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    depends_on:
+      - db
+    restart: always
+
+  # PostgreSQL database
+  db:
+    container_name: postgresql_container_auth
+    image: postgres:13
+    environment:
+      POSTGRES_DB: user_auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5431:5431"
+    volumes:
+      - C:\postgres_data_auth:/var/lib/postgresql/data
+    restart: always
+
+
