@@ -117,7 +117,7 @@ Response:
    Description: Validate Token.
 
    Request:
-   URL:  PUT  /api/v1/auth/user/validate
+   URL:  GET  /api/v1/auth/user/validate
 
    Headers:
 
@@ -125,8 +125,7 @@ Response:
         Authorization: No Auth
    Request Param:
 
-             "token":"eyJhbGciOiJIUzI1NiJ9",     
-      
+             "token":"eyJhbGciOiJIUzI1NiJ9",       
 
    Response:
 
