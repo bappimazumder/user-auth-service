@@ -41,92 +41,76 @@ public class AuthServiceTests {
 
     @Test
     void testAddUser() {
-        // Given: A UserInfoRequestDto
         UserInfoRequestDto requestDto = new UserInfoRequestDto();
         requestDto.setPassword("password123");
 
-        // Mock the objectMapper and passwordEncoder
         UserInfo userInfo = new UserInfo();
-        userInfo.setPassword("encodedPassword");
+        userInfo.setPassword("password");
         userInfo.setActiveStatus(true);
         userInfo.setCreateBy(1L);
         userInfo.setCreateDate(new Timestamp(System.currentTimeMillis()));
-        userInfo.setCode("USER_123456789");
+        userInfo.setCode("USER_123456");
         when(objectMapper.map(requestDto)).thenReturn(userInfo);
-        when(passwordEncoder.encode("password123")).thenReturn("encodedPassword");
+        when(passwordEncoder.encode("password")).thenReturn("password123");
 
-        // When: addUser method is called
+
         String result = authService.addUser(requestDto);
 
-        // Then: Ensure repository.save() is called and the correct success message is returned
-        //verify(repository).save(userInfo);
         assertEquals("User created successfully", result);
     }
 
     @Test
     void testGenerateToken() {
-        // Given: A sample username
-        String username = "testUser";
-        String expectedToken = "mockedJwtToken";  // A mocked token for the test
 
-        // Mock the behavior of jwtService.generateToken
+        String username = "testUser";
+        String expectedToken = "mockedJwtToken";
+
         when(jwtService.generateToken(username)).thenReturn(expectedToken);
 
-        // When: The generateToken method is called
         String result = authService.generateToken(username);
 
-        // Then: Verify that jwtService.generateToken was called with the correct username
         verify(jwtService).generateToken(username);
 
-        // Assert: The generated token should be the same as the mocked token
         assertEquals(expectedToken, result);
     }
 
     @Test
     void testValidateToken_Success() {
-        // Given: A valid token and expected username
+
         String token = "validToken";
         String username = "testUser";
-        UserDetails userDetails = mock(UserDetails.class);  // Mock userDetails object
+        UserDetails userDetails = mock(UserDetails.class);
 
-        // Mocking behavior of jwtService and userDetailsService
-        when(jwtService.extractUsername(token)).thenReturn(username);  // Extract username from token
-        when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);  // Load user details
-        when(jwtService.validateToken(token, userDetails)).thenReturn(true);  // Validate token
+        when(jwtService.extractUsername(token)).thenReturn(username);
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);
+        when(jwtService.validateToken(token, userDetails)).thenReturn(true);
 
-        // When: validateToken method is called
         Boolean result = authService.validateToken(token);
 
-        // Then: Assert that the result is true and validate the flow
-        verify(jwtService).extractUsername(token);  // Ensure username extraction was called
-        verify(userDetailsService).loadUserByUsername(username);  // Ensure user details were loaded
-        verify(jwtService).validateToken(token, userDetails);  // Ensure token validation was called
+        verify(jwtService).extractUsername(token);
+        verify(userDetailsService).loadUserByUsername(username);
+        verify(jwtService).validateToken(token, userDetails);
 
-        // Assert: The token is valid
         assertTrue(result);
     }
 
     @Test
     void testValidateToken_InvalidToken() {
-        // Given: A token that is invalid
+
         String token = "invalidToken";
         String username = "testUser";
         UserDetails userDetails = mock(UserDetails.class);
 
-        // Mocking behavior of jwtService and userDetailsService
-        when(jwtService.extractUsername(token)).thenReturn(username);  // Extract username from token
-        when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);  // Load user details
-        when(jwtService.validateToken(token, userDetails)).thenReturn(false);  // Token is invalid
+        when(jwtService.extractUsername(token)).thenReturn(username);
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);
+        when(jwtService.validateToken(token, userDetails)).thenReturn(false);
 
-        // When: validateToken method is called
         Boolean result = authService.validateToken(token);
 
-        // Then: Assert that the result is false and validate the flow
         verify(jwtService).extractUsername(token);
         verify(userDetailsService).loadUserByUsername(username);
         verify(jwtService).validateToken(token, userDetails);
 
-        // Assert: The token is invalid
         assertFalse(result);
     }
 
